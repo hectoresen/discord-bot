@@ -1,0 +1,29 @@
+{
+  "name": "gamon",
+  "version": "1.0.0",
+  "description": "gamon bot for discord clan season of discovery by hresdev",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "build": "webpack"
+  },
+  "author": "hresdev",
+  "license": "ISC",
+  "dependencies": {
+    "discord-tickets": "^2.0.0",
+    "discord.js": "^14.14.0",
+    "dotenv": "^16.3.1",
+    "enmap": "^5.9.8",
+    "fs": "^0.0.1-security",
+    "moment": "^2.29.4",
+    "mongodb": "^6.3.0",
+    "mongoose": "^8.0.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "esm": "^3.2.25"
+  }
+}
