@@ -1,7 +1,7 @@
-const { client } = require('./client/client');
-const welcome = require('./welcome/welcome');
-const roleSelector = require('./role-selector/role-selector');
-require('./client/client');
+const { client } = require('./src/client/client');
+const welcome = require('./src/welcome/welcome');
+const roleSelector = require('./src/role-selector/role-selector');
+require('./src/client/client');
 
 
 welcome(client);
@@ -13,7 +13,8 @@ roleSelector(client);
 let handlers = ['events', 'commands', 'tickets'];
 handlers.forEach(handler => {
     console.log(handler)
-    require(`./handlers/${handler}`)(client)
+    //require(`./src/handlers/${handler}`)(client)
+    require(`./src/handlers/${handler}`)(client);
 })
 
 

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const commandsDir = `${process.cwd()}/commands`;
+const commandsDir = `${process.cwd()}/src/commands`;
 const config = require('../config/config');
 
 module.exports = async client => {

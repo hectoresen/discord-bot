@@ -1,6 +1,5 @@
 const fs = require('fs');
-const eventsDir = `${process.cwd()}/events`;
-
+const eventsDir = `${process.cwd()}/src/events`;
 
 module.exports = client => {
     const events = fs.readdirSync(eventsDir).filter(file => file.endsWith('.js'));
