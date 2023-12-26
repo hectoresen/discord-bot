@@ -8,7 +8,7 @@ const {
 
 module.exports = client => {
 
-    const roles = [
+    const mainRoles = [
         {
             id: process.env.DISCORD_ROLE_MAIN_DPS,
             label: 'Main DPS',
@@ -20,7 +20,10 @@ module.exports = client => {
         {
             id: process.env.DISCORD_ROLE_MAIN_HEALER,
             label: 'Main HEALER',
-        },
+        }
+    ];
+
+    const alterRoles = [
         {
             id: process.env.DISCORD_ROLE_ALTER_DPS,
             label: 'Alter DPS'
@@ -33,21 +36,21 @@ module.exports = client => {
             id: process.env.DISCORD_ROLE_ALTER_HEALER,
             label: 'Alter HEALER'
         }
-    ];
+    ]
 
     client.on('ready', async (c) => {
         try {
             const channel = await client.channels.cache.get(process.env.DISCORD_ROLE_CHANNEL);
             if (!channel) return;
 
-            const row = new ActionRowBuilder();
-            const embedMessage = new EmbedBuilder()
-                .setTitle('Sistema de roles PVE')
-                .setDescription('Escoge el rol PVE de tu Main y de tu alter, podrás editarlo tantas veces como quieras.')
+            const mainRolesRow = new ActionRowBuilder();
+            const embedMainMessage = new EmbedBuilder()
+                .setTitle('Sistema de roles PVE para Main')
+                .setDescription('Escoge el rol PVE de tu Main, podrás editarlo tantas veces como quieras.')
                 .setColor('Gold')
 
-            roles.forEach((role) => {
-                row.components.push(
+            mainRoles.forEach((role) => {
+                mainRolesRow.components.push(
                     new ButtonBuilder()
                         .setCustomId(`roleSelector_${role.id}`)
                         .setLabel(role.label)
@@ -56,9 +59,30 @@ module.exports = client => {
             });
 
             await channel.send({
-                embeds: [embedMessage],
-                components: [row],
+                embeds: [embedMainMessage],
+                components: [mainRolesRow],
             });
+
+            const alterRolesRow = new ActionRowBuilder();
+            const embedAlterMessage = new EmbedBuilder()
+                .setTitle('Sistema de roles PVE para Alter')
+                .setDescription('Escoge el rol PVE de tu Alter, podrás editarlo tantas veces como quieras')
+                .setColor('DarkGold')
+
+            alterRoles.forEach((role) => {
+                alterRolesRow.components.push(
+                    new ButtonBuilder()
+                        .setCustomId(`roleSelector_${role.id}`)
+                        .setLabel(role.label)
+                        .setStyle(ButtonStyle.Primary)
+                )
+            });
+
+            await channel.send({
+                embeds: [embedAlterMessage],
+                components: [alterRolesRow]
+            })
+
             //process.exit();
         } catch (error) {
             console.log(error);
