@@ -8,7 +8,7 @@ const {
 
 module.exports = client => {
 
-    const roles = [
+    const mainRoles = [
         {
             id: process.env.DISCORD_ROLE_MAIN_DPS,
             label: 'Main DPS',
@@ -28,14 +28,14 @@ module.exports = client => {
             const channel = await client.channels.cache.get(process.env.DISCORD_ROLE_CHANNEL);
             if (!channel) return;
 
-            const row = new ActionRowBuilder();
-            const embedMessage = new EmbedBuilder()
+            const mainRow = new ActionRowBuilder();
+            const mainEmbedMessage = new EmbedBuilder()
                 .setTitle('Sistema de roles PVE')
                 .setDescription('Escoge el rol PVE de tu Main, podrás editarlo tantas veces como quieras.')
                 .setColor('Gold')
 
-            roles.forEach((role) => {
-                row.components.push(
+            mainRoles.forEach((role) => {
+                mainRow.components.push(
                     new ButtonBuilder()
                         .setCustomId(`roleSelector_${role.id}`)
                         .setLabel(role.label)
@@ -44,8 +44,8 @@ module.exports = client => {
             });
 
             await channel.send({
-                embeds: [embedMessage],
-                components: [row],
+                embeds: [mainEmbedMessage],
+                components: [mainRow],
             });
             //process.exit();
         } catch (error) {
