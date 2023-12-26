@@ -1,13 +1,13 @@
 const { client } = require('./src/client/client');
 const welcome = require('./src/welcome/welcome');
 const mainRoleSelector = require('./src/role-selector/pve-main-role-selector');
-const alterRoleSelector = require('./src/role-selector/pve-main-role-selector');
+//const alterRoleSelector = require('./src/role-selector/pve-main-role-selector');
 require('./src/client/client');
 
 
 welcome(client);
 mainRoleSelector(client);
-alterRoleSelector(client);
+//alterRoleSelector(client);
 
 //HANDLERS
 let handlers = ['events', 'commands', 'tickets'];
