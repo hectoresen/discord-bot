@@ -24,13 +24,13 @@ const client = new Client(
 //https://discordapi.com/permissions.html#1095199883263
 
 client.login(config.token).then(() => {
-	client.user.setActivity(`Unso es gay en ${config.serverName}`);
+	client.user.setActivity(`Farmeando en ${config.serverName}`);
 }).catch(error => console.log(error));
 
 //DB
 client.tickets = new Enmap({
     name: 'tickets',
-    dataDir: path.join(__dirname, '../db/tickets')  // Usar path.join para construir la ruta
+    dataDir: path.join(__dirname, '../db/tickets')
 });
 
 

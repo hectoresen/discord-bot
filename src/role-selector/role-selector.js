@@ -21,6 +21,18 @@ module.exports = client => {
             id: process.env.DISCORD_ROLE_MAIN_HEALER,
             label: 'Main HEALER',
         },
+        {
+            id: process.env.DISCORD_ROLE_ALTER_DPS,
+            label: 'Alter DPS'
+        },
+        {
+            id: process.env.DISCORD_ROLE_ALTER_TANK,
+            label: 'Alter TANK'
+        },
+        {
+            id: process.env.DISCORD_ROLE_ALTER_HEALER,
+            label: 'Alter HEALER'
+        }
     ];
 
     client.on('ready', async (c) => {
@@ -31,7 +43,7 @@ module.exports = client => {
             const row = new ActionRowBuilder();
             const embedMessage = new EmbedBuilder()
                 .setTitle('Sistema de roles PVE')
-                .setDescription('Escoge el rol PVE de tu Main, podrás editarlo tantas veces como quieras.')
+                .setDescription('Escoge el rol PVE de tu Main y de tu alter, podrás editarlo tantas veces como quieras.')
                 .setColor('Gold')
 
             roles.forEach((role) => {
