@@ -24,7 +24,7 @@ const client = new Client(
 //https://discordapi.com/permissions.html#1095199883263
 
 client.login(config.token).then(() => {
-	client.user.setActivity(`Farmeando en ${config.serverName}`);
+	client.user.setActivity(`${config.serverName}`);
 }).catch(error => console.log(error));
 
 //DB
