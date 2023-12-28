@@ -1,4 +1,9 @@
 .env
 .env.local
+.env.dev
 node_modules
 dist
+nohup.out
+output.log
+src/db/tickets/enmap.sqlite-shm
+src/db/tickets/enmap.sqlite-wal
