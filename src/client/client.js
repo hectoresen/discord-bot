@@ -4,7 +4,10 @@ const dotenv = require('dotenv').config();
 const config = require('../config/config');
 const Enmap = require('enmap');
 const path = require('path');
+const { Player } = require("discord-player");
 
+//https://ziad87.net/intents/
+//https://discordapi.com/permissions.html#1095199883263
 const client = new Client(
 	{
 		intents: [
@@ -13,19 +16,37 @@ const client = new Client(
 			IntentsBitField.Flags.GuildMembers,
 			IntentsBitField.Flags.GuildMessages,
 			IntentsBitField.Flags.MessageContent,
+			IntentsBitField.Flags.GuildVoiceStates
 		],
 		partials: [
 			Partials.GuildMember,
-			Partials.GuildMessages
+			Partials.GuildMessages,
 		]
 	}
 );
-//https://ziad87.net/intents/
-//https://discordapi.com/permissions.html#1095199883263
+
 
 client.login(config.token).then(() => {
 	client.user.setActivity(`${config.serverName}`);
 }).catch(error => console.log(error));
+
+
+//Music https://discord-player.js.org/guide/welcome/welcome
+client.player = new Player(client, {
+	leaveOnEnd: true,
+	leaveOnStop: true,
+	leaveOnEmpty: true,
+	levateOnEmptyCooldown: 60000,
+	autoSelfDeaf: true,
+	initialVolume: 100
+});
+
+//Initialize music player
+async function initializePlayer() {
+    await client.player.extractors.loadDefault((ext) => ext !== 'YouTubeExtractor');
+}
+initializePlayer().catch(console.error);
+
 
 //DB
 client.tickets = new Enmap({

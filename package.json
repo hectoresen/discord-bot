@@ -12,16 +12,20 @@
   "author": "hresdev",
   "license": "ISC",
   "dependencies": {
+    "discord-player": "^6.6.6",
     "discord-tickets": "^2.0.0",
     "discord.js": "^14.14.0",
     "discord.js-poll": "^1.2.1",
     "dotenv": "^16.3.1",
     "enmap": "^5.9.8",
+    "ffmpeg-static": "^5.2.0",
     "fs": "^0.0.1-security",
+    "mediaplex": "^0.0.9",
     "moment": "^2.29.4",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "youtube-ext": "^1.1.16"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.4",
