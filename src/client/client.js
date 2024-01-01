@@ -13,6 +13,7 @@ const client = new Client(
 			IntentsBitField.Flags.GuildMembers,
 			IntentsBitField.Flags.GuildMessages,
 			IntentsBitField.Flags.MessageContent,
+			IntentsBitField.Flags.GuildMessageReactions
 		],
 		partials: [
 			Partials.GuildMember,
@@ -20,6 +21,7 @@ const client = new Client(
 		]
 	}
 );
+
 //https://ziad87.net/intents/
 //https://discordapi.com/permissions.html#1095199883263
 
@@ -32,6 +34,8 @@ client.tickets = new Enmap({
     name: 'tickets',
     dataDir: path.join(__dirname, '../db/tickets')
 });
+
+client.pveEvents = new Enmap();
 
 
 module.exports = {
