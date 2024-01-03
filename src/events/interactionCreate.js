@@ -56,6 +56,7 @@ module.exports = {
             if (customId.startsWith('cancelEvent')) {
                 const messageId = customId.split('_')[1];
                 const eventDetails = client.pveEvents.get(messageId);
+                const eventMessage = await interaction.channel.messages.fetch(messageId);
                 const formattedDateTime = eventDetails.formattedDateTime;
 
                 if (!eventDetails) {
@@ -63,9 +64,12 @@ module.exports = {
                     return;
                 }
 
+                
                 // Cancelación por el creador del evento
                 if (interaction.user.id === eventDetails.creatorId) {
-                    interaction.message.delete();
+                    const updatedEmbed = updateEmbed(client, messageId, true);
+                    await eventMessage.edit({ embeds: [updatedEmbed] });
+                    await eventMessage.reactions.removeAll();
                     client.pveEvents.delete(messageId);
                     interaction.reply({ content: 'Evento cancelado por el creador.', ephemeral: true });
                 } else {
@@ -79,13 +83,13 @@ module.exports = {
                         client.pveEvents.set(messageId, eventDetails);
 
                         // Obtener y actualizar el mensaje del evento
-                        const eventMessage = await interaction.channel.messages.fetch(messageId);
-                        eventMessage.edit({ embeds: [updateEmbed(client, messageId, formattedDateTime)] });
+                        await eventMessage.edit({ embeds: [updateEmbed(client, messageId, true)] });
 
                         if (eventDetails.votes.length >= 3) {
+                            const updatedEmbed = updateEmbed(client, messageId, true);
                             interaction.message.delete();
                             client.pveEvents.delete(messageId);
-                            interaction.reply({ content: 'Evento cancelado por votación.', ephemeral: true });
+                            await eventMessage.edit({ embeds: [updatedEmbed] });
                         } else {
                             interaction.reply({ content: `Voto registrado. Votos actuales: ${eventDetails.votes.length}/3`, ephemeral: true });
                         }

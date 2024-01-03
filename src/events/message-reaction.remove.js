@@ -23,15 +23,20 @@ module.exports = {
             if (index > -1) {
                 // Retirar al usuario de la lista del rol
                 eventDetails[role].splice(index, 1);
+
+                // Retirar al usuario de la lista general de participantes
+                const participantIndex = eventDetails.participants.indexOf(user.username);
+                if (participantIndex > -1) {
+                    eventDetails.participants.splice(participantIndex, 1);
+                }
+
                 client.pveEvents.set(reaction.message.id, eventDetails);
 
                 // Obtener el mensaje del evento y actualizar el embed
                 const eventMessage = await reaction.message.channel.messages.fetch(reaction.message.id);
-                // Aquí necesitarás obtener el raidLeader y formattedDateTime de alguna manera
-                // Por ahora, los he dejado como valores fijos, pero deberías ajustarlos
-                const raidLeader = { username: "Nombre del Raid Leader" };
-                const formattedDateTime = "Fecha y Hora del Evento";
-                eventMessage.edit({ embeds: [updateEmbed(client, reaction.message.id, raidLeader, formattedDateTime)] });
+
+                const raidLeader = { username: `${eventDetails.participants[0]}` };
+                eventMessage.edit({ embeds: [updateEmbed(client, reaction.message.id, raidLeader)] });
             }
         }
     }
