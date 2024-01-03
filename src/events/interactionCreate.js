@@ -52,67 +52,47 @@ module.exports = {
                 return;
             }
 
-            // Manejar botón de cancelación de evento PVE
+            // Cancelación de evento PVE
             if (customId.startsWith('cancelEvent')) {
                 const messageId = customId.split('_')[1];
                 const eventDetails = client.pveEvents.get(messageId);
                 const eventMessage = await interaction.channel.messages.fetch(messageId);
-                const formattedDateTime = eventDetails.formattedDateTime;
 
                 if (!eventDetails) {
                     interaction.reply({ content: 'Evento no encontrado o ya finalizado.', ephemeral: true });
                     return;
                 }
 
-                
-                // Cancelación por el creador del evento
-                if (interaction.user.id === eventDetails.creatorId) {
+                // Cancelación por el creador del evento o por votación
+                if (interaction.user.id === eventDetails.creatorId || eventDetails.votes.length >= 3) {
                     const updatedEmbed = updateEmbed(client, messageId, true);
-                    await eventMessage.edit({ embeds: [updatedEmbed] });
+                    await eventMessage.edit({ embeds: [updatedEmbed], components: [] }); // Eliminar botones al cancelar
                     await eventMessage.reactions.removeAll();
                     client.pveEvents.delete(messageId);
-                    interaction.reply({ content: 'Evento cancelado por el creador.', ephemeral: true });
+                    interaction.reply({ content: 'Evento cancelado.', ephemeral: true });
                 } else {
                     // Votación para cancelar por otros usuarios
-                    if (!eventDetails.votes) eventDetails.votes = [];
-                    if (!eventDetails.voters) eventDetails.voters = []; // Inicializar array de votantes si no existe
-
                     if (!eventDetails.votes.includes(interaction.user.id)) {
                         eventDetails.votes.push(interaction.user.id);
-                        eventDetails.voters.push(interaction.user.id); // Añadir al usuario a la lista de votantes
+                        eventDetails.voters.push(interaction.user.id);
                         client.pveEvents.set(messageId, eventDetails);
+                        await eventMessage.edit({ embeds: [updateEmbed(client, messageId)] });
 
-                        // Obtener y actualizar el mensaje del evento
-                        await eventMessage.edit({ embeds: [updateEmbed(client, messageId, true)] });
-
-                        if (eventDetails.votes.length >= 3) {
-                            const updatedEmbed = updateEmbed(client, messageId, true);
-                            interaction.message.delete();
-                            client.pveEvents.delete(messageId);
-                            await eventMessage.edit({ embeds: [updatedEmbed] });
-                        } else {
-                            interaction.reply({ content: `Voto registrado. Votos actuales: ${eventDetails.votes.length}/3`, ephemeral: true });
-                        }
+                        interaction.reply({ content: `Voto registrado. Votos actuales: ${eventDetails.votes.length}/3`, ephemeral: true });
                     } else {
                         // Retirar voto si el usuario ya había votado
                         const voteIndex = eventDetails.votes.indexOf(interaction.user.id);
-                        const voterIndex = eventDetails.voters.indexOf(interaction.user.id);
                         if (voteIndex > -1) {
                             eventDetails.votes.splice(voteIndex, 1);
-                            eventDetails.voters.splice(voterIndex, 1);
+                            eventDetails.voters.splice(voteIndex, 1);
                             client.pveEvents.set(messageId, eventDetails);
-
-                            // Actualizar el mensaje del evento
-                            const eventMessage = await interaction.channel.messages.fetch(messageId);
-                            eventMessage.edit({ embeds: [updateEmbed(client, messageId, formattedDateTime)] });
-
                             interaction.reply({ content: 'Tu voto para cancelar el evento ha sido retirado.', ephemeral: true });
                         }
                     }
                 }
                 return;
             }
-
         }
+
     }
 };

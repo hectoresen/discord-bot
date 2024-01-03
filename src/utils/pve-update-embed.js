@@ -13,7 +13,7 @@ function updateEmbed(client, messageId, cancelled = false) {
     if (cancelled) {
         const cancelMessage = eventDetails.voters.length >= 3 ?
             `Este evento ha sido cancelado debido a una votación de los siguientes usuarios: ${eventDetails.voters.join(', ')}` :
-            `Evento cancelado por ${raidLeaderUsername}.`;
+            `${eventDetails.instanceName} cancelado por ${raidLeaderUsername}.`;
         
         return new Discord.EmbedBuilder()
                     .setDescription(`${cancelMessage}`)
